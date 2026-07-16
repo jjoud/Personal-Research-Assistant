@@ -18,10 +18,15 @@ env/
 .ruff_cache/
 .coverage
 htmlcov/
+__pycache__/
 
 # Environment and secrets
 .env
 .env.*
+
+# Local Codex/project metadata not needed in submission archives
+.codex/
+.agents/
 
 # OS and editor files
 .DS_Store

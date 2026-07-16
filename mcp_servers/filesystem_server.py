@@ -4,7 +4,7 @@ from pathlib import Path
 
 
 class FilesystemMCPServer:
-    """Small MCP-style filesystem server with a separated tool interface.
+    """Local MCP-compatible filesystem boundary with a separated tool interface.
 
     This is intentionally lightweight for the assignment demo. Agents call this
     class through the File / Workspace Agent instead of touching files directly.
@@ -67,6 +67,18 @@ class FilesystemMCPServer:
             "ok": True,
             "path": str(safety["relative_path"]),
             "message": "File written successfully.",
+        }
+
+    def create_directory(self, path: str) -> dict[str, object]:
+        safety = self.check_path_safety(path)
+        if not safety["ok"]:
+            return safety
+        target = Path(str(safety["path"]))
+        target.mkdir(parents=True, exist_ok=True)
+        return {
+            "ok": True,
+            "path": str(safety["relative_path"]),
+            "message": "Directory created successfully.",
         }
 
     def update_file(self, path: str, content: str) -> dict[str, object]:
