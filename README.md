@@ -1,16 +1,16 @@
 # Personal Research Assistant
 
-Week 3 Capstone implementation for Masar Applied AI Engineering.
+Capstone implementation for Masar Applied AI Engineering.
 
-This project is a working Python CLI Personal Research Assistant based on the Week 2 architecture. It keeps the scope aligned with `masar-week3-project.pdf`: a running application with an Orchestrator, specialist agents, tools, at least one MCP-style server boundary, a simple interface, README, and the three required end-to-end requests.
+This project is a working Python CLI Personal Research Assistant based on the earlier architecture design. It keeps the scope aligned with the assignment: a running application with an Orchestrator, specialist agents, tools, at least one MCP-style server boundary, a simple interface, README, and the three required end-to-end requests.
 
 ## Project Overview
 
 The assistant can answer from local notes, research a wiki/web source, and save a research report into the workspace. It uses a Supervisor-Worker style architecture: the Orchestrator receives the user request, routes it to bounded specialist agents, and returns the final answer.
 
-## How This Follows The Week 2 Architecture
+## How This Follows The Architecture
 
-The Week 2 design is used only as background architecture guidance. The Week 3 PDF is the grading source of truth. This implementation keeps the Week 2 roles but simplifies them into readable Python modules so the system is easy to run and explain.
+The earlier design is used only as background architecture guidance. The assignment is the grading source of truth. This implementation keeps the original roles but simplifies them into readable Python modules so the system is easy to run and explain.
 
 ## Architecture Diagram
 
@@ -40,11 +40,11 @@ flowchart TD
 | File / Workspace Agent | Creates, reads, and updates files inside `workspace/` only | `agents/file_agent.py` |
 | Report Writer | Converts research findings into Markdown reports | `agents/report_writer.py` |
 
-## Week 3 PDF Requirements Coverage
+## Assignment Requirements Coverage
 
 | Requirement from PDF | Implemented file/module | How to run/test it | Status |
 | --- | --- | --- | --- |
-| Build a working Personal Research Assistant application based on the Week 2 architecture | `main.py`, `agents/` | `python main.py --demo` | implemented |
+| Build a working Personal Research Assistant application based on the earlier architecture | `main.py`, `agents/` | `python main.py --demo` | implemented |
 | Include an Orchestrator that receives requests, routes to specialist agents, and returns a final answer | `agents/orchestrator.py` | `python main.py --trace "What is in my note about last week's meeting?"` | implemented |
 | Include a General Assistant for conversation and simple questions | `agents/general_assistant.py` | `python main.py "hello"` | implemented |
 | Include a Knowledge Agent that answers from user notes/documents with citations | `agents/knowledge_agent.py`, `tools/knowledge_tools.py`, `workspace/notes/` | `python main.py "What is in my note about last week's meeting?"` | implemented |
@@ -65,7 +65,7 @@ This project uses tools for note search, external research, and workspace file o
 
 ### Local MCP-compatible Filesystem Server
 
-The Week 3 PDF requires at least one MCP server. This project uses a local MCP-compatible filesystem server instead of the official MCP SDK to keep the CLI demo reliable and dependency-free.
+The assignment requires at least one MCP server. This project uses a local MCP-compatible filesystem server instead of the official MCP SDK to keep the CLI demo reliable and dependency-free.
 
 - server: `mcp_servers/filesystem_server.py`
 - client: `FileWorkspaceAgent`
@@ -77,7 +77,7 @@ This does not falsely claim official MCP. It preserves the key MCP idea for this
 
 ## Optional Voice Bonus Implemented
 
-The Week 3 PDF also lists voice as an optional bonus. This project includes a small voice layer that sits on top of the same Orchestrator and does not replace the CLI.
+The assignment also lists voice as an optional bonus. This project includes a small voice layer that sits on top of the same Orchestrator and does not replace the CLI.
 
 ### Voice Flow
 
@@ -172,6 +172,18 @@ For Arabic speech, use:
 python main.py --voice --voice-language ar-SA --trace --force
 ```
 
+For OpenAI ASR in English, use:
+
+```bash
+python main.py --voice --asr-provider openai --voice-language en --voice-device-index 1 --trace --force --voice-timeout 12 --voice-phrase-limit 8 --voice-pause-threshold 1.5
+```
+
+For OpenAI ASR in Arabic, use:
+
+```bash
+python main.py --voice --asr-provider openai --voice-language ar --voice-device-index 1 --trace --force
+```
+
 To inspect microphones first, run:
 
 ```bash
@@ -200,7 +212,7 @@ Use Python 3.10 or newer.
 pip install -r requirements.txt
 ```
 
-No API keys or paid services are required.
+No API keys or paid services are required for the core CLI application. The optional OpenAI ASR voice mode requires an OpenAI API key.
 
 ## Run Commands
 
@@ -278,7 +290,7 @@ python -m unittest discover -s tests
 Optional syntax check:
 
 ```bash
-python -m py_compile main.py agents/orchestrator.py agents/general_assistant.py agents/knowledge_agent.py agents/research_agent.py agents/file_agent.py agents/report_writer.py tools/knowledge_tools.py tools/research_tools.py mcp_servers/filesystem_server.py schemas/messages.py
+python -m py_compile main.py voice/asr.py voice/tts.py voice/voice_loop.py agents/orchestrator.py agents/general_assistant.py agents/knowledge_agent.py agents/research_agent.py agents/file_agent.py agents/report_writer.py tools/knowledge_tools.py tools/research_tools.py mcp_servers/filesystem_server.py schemas/messages.py
 ```
 
 ## Submission
@@ -306,6 +318,9 @@ The archive should exclude:
 - `.codex/`
 - `.agents/`
 - `.pytest_cache/`
+- `.env`
+- `.env.*`
+- `workspace/mic-test.wav`
 
 ## Demo Transcript
 
