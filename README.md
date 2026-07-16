@@ -311,16 +311,6 @@ The submission archive should include:
 - `workspace/reports/`
 - `DEMO_TRANSCRIPT.md`
 
-The archive should exclude:
-
-- `.venv/`
-- `__pycache__/`
-- `.codex/`
-- `.agents/`
-- `.pytest_cache/`
-- `.env`
-- `.env.*`
-- `workspace/mic-test.wav`
 
 ## Demo Transcript
 
